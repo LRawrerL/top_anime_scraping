@@ -22,8 +22,24 @@ const getTitles =  async () => {
         return {rank, title, score, information};
     });
 
-    console.log(firstTitle);
-    await browser.close();
+    let isTherePage = true;
+
+    while(isTherePage){
+        const allTitlesInaPage = await page.evaluate(() => {
+            const data = document.querySelectorAll(".ranking-list");
+            
+            return Array.from(data).map((show) => {
+                const rank = show.querySelector(".top-anime-rank-text").innerHTML;
+                const title = show.querySelector(".anime_ranking_h3").innerText;
+                const score = show.querySelector(".score-label").innerText;
+                const information = show.querySelector(".information").innerText
+                return {rank, title, score, information};
+            });
+        });
+        console.log(allTitlesInaPage);
+        isTherePage = await page.$(".next");
+        await page.click(".next");
+    }
 }
 
 getTitles();
