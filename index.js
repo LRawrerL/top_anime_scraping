@@ -14,8 +14,12 @@ const getTitles =  async () => {
     });
 
     const firstTitle = await page.evaluate(() => {
-        const title = document.querySelector(".ranking-list").innerHTML;
-        return {title};
+        const data = document.querySelector(".ranking-list");
+        const rank = data.querySelector(".top-anime-rank-text").innerHTML;
+        const title = data.querySelector(".anime_ranking_h3").innerText;
+        const score = data.querySelector(".score-label").innerText;
+        const information = data.querySelector(".information").innerText
+        return {rank, title, score, information};
     });
 
     console.log(firstTitle);
