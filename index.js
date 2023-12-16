@@ -37,19 +37,16 @@ const getTitles =  async () => {
     };
     
     let pages = 1;
-    while(pages < 5) {
+    while(pages < 6) {
         let allTitlesInaPage = await getTitlesFromPage();
         console.log(allTitlesInaPage);
-
+        //waits for selector to load incase it doesn't
         await page.waitForSelector(".next");
         await page.click(".next");
+        //waits to give time for context to load
         await Promise.race([
-            page.waitForNavigation(),
-            new Promise(resolve => setTimeout(resolve, 1000))
+            new Promise(resolve => setTimeout(resolve, 5000))
         ]);
-        allTitlesInaPage = await getTitlesFromPage();
-        console.log(allTitlesInaPage);
-
         pages++;
     }
     await browser.close();
